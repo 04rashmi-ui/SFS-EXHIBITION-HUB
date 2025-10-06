@@ -49,7 +49,7 @@ window.projects = [
     "class":"10th B sec",
     "Timecreated":"7 PM",
     "projectdisplayed":"Quadrangle",
-    "costitems":"100 - 400 rupees"
+    "costitems":"100 - 300 rupees"
 
   },
   {
@@ -624,4 +624,5 @@ window.projects = [
     "details": "Detailed explanation of DIY Microscope project with diagrams, experiments, and real-life applications. Prepared by Divya Kapoor."
   }
 ];
+
 
