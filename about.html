@@ -1,0 +1,111 @@
+<html>
+<head>
+    <title>
+        ABOUT PAGE
+    </title>
+        <style type ="text/css">
+            body{background-color: darkblue;}
+            
+h1 {
+  font-size: 3em;
+  font-weight: bold;
+  background: linear-gradient(270deg, #ff6b6b, #f8e71c, #50e3c2, #4a90e2, #b86bff);
+  background-size: 1000% 1000%;
+  background-clip: text;
+  -webkit-background-clip: text; 
+  color: transparent;
+  -webkit-text-fill-color: transparent; 
+  animation: gradientShift 6s ease infinite;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+
+        @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    a {
+      display: inline-block;
+      text-decoration: none;
+      color: #fff;
+      background: #007bff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      transition:  0.3s;
+    }
+
+    a:hover {
+      background: #0056b3;
+    }
+            p{color:white ;}
+            button{color: black;background:#00c6ff; margin:5px;}
+            canvas { position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; }
+            ol{list-style-type: none;}
+            ul{list-style-type: none;}
+            
+        </style>
+    
+</head>
+<body>
+    <canvas id="bgCanvas"></canvas>
+    
+       <H1>THIS IS THE ABOUT PAGE</H1> 
+    <p>
+        This project is a School Project Hub where users can search for any project by name or student. All project data is stored in a separate JSON/JS file which the website reads and displays dynamically. The search button filters projects instantly on the page.
+Since this is a static web project, new projects cannot be saved directly from the browser — any updates to projects need to be added manually in the JSON/JS file. However, if this project is uploaded to a web server, it will display all the updated projects immediately. The background animation and responsive layout make the interface more engaging for viewers.
+    </p>
+       
+This is a simple website I built for our school exhibition where all the projects created by students can be stored, searched, and displayed in one place.
+
+Let me explain how it works.
+
+ <ol>
+1. The Website Page
+   <ul>
+    <li>I created the main page using HTML and CSS.
+  <li> - HTML is used to structure the content.
+   <li>- CSS is used to design and style the page, making it colorful, modern, and easy to use.
+   <li>- I also added a particle animation background using JavaScript to make the page look attractive.
+   </ul>
+
+<li>2. The Data Storage
+<ul>
+  <li> All the project details, like the project name, summary, student’s name, class, and cost, are stored in a separate JSON file.
+   JSON stands for JavaScript Object Notation. It is like a digital notebook that stores information in a very organized way.
+  </ul>
+<li>3. How Search Works
+   <ul><li>When a user types a project name or student’s name in the search box and clicks the button, the program checks the JSON file, finds the matching project, and displays it in the form of a card.
+   Each card shows the project’s details clearly so that anyone can understand it quickly.
+   </ul>
+
+<li>4. Why this is Useful
+   <ul><li>- Instead of flipping through papers or registers, teachers and students can simply search and find any project instantly.
+   <li>- It is reusable — every year we can just add new projects into the JSON file.
+   <li>- It also teaches us the importance of digital record-keeping and technology in education.
+</ul>
+ </ol>
+    
+    <img src = "wallpaper.jpg" style=" height : 200px; width : 250px ;  border-radius:10px; margin-top:20px;" alt="IMAGE OF wallpaper">
+
+    <button>
+        <a href = "index.html">BACK TO HOME </a>
+
+    </button>
+
+<script>
+const canvas = document.getElementById("bgCanvas");
+const ctx = canvas.getContext("2d");
+let particles = [];
+function resizeCanvas(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
+window.addEventListener("resize", resizeCanvas); resizeCanvas();
+class Particle{constructor(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.size=Math.random()*3+1;this.speedX=(Math.random()-0.5)*1.5;this.speedY=(Math.random()-0.5)*1.5;} update(){this.x+=this.speedX;this.y+=this.speedY;if(this.x<0||this.x>canvas.width)this.speedX*=-1;if(this.y<0||this.y>canvas.height)this.speedY*=-1;} draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fillStyle="rgba(255,255,255,0.7)";ctx.fill();}}
+function initParticles(){particles=[];for(let i=0;i<100;i++){particles.push(new Particle());}}
+function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animate);}
+initParticles(); animate();
+    </script>
+</body>
+</html>
