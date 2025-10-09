@@ -6,7 +6,7 @@ window.projects = [
     "details": "Uses vinegar and baking soda",
     "class": "6A",
     "Timecreated": "2025-10-04",
-    "projectdisplayed": "Yes",
+    "projectdisplayed": "near quadrangle",
     "costitems": "₹100-150"
   },
   {
@@ -16,7 +16,7 @@ window.projects = [
     "details": "Made with thermocol & motors",
     "class": "7B",
     "Timecreated": "2025-10-04",
-    "projectdisplayed": "Yes",
+    "projectdisplayed": "Near basketball court",
     "costitems": "₹200"
   }
 ];
