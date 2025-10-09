@@ -1,6 +1,5 @@
-# Exhibition Project
-
-## My requriemnt 
-    1. Create an HTML page
-    2. Get the user input from user
-        2.1 
+SFS PROJECT HUB
+For school purposes
+1. It gets the input
+2. Check the front end 
+3. Then gives back the output
