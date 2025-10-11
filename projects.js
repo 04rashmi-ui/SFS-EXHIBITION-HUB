@@ -35,7 +35,7 @@ function displayProjects(projects) {
       <p><b>Created By:</b> ${p.createdBy}</p>
       <p><b>Details:</b> ${p.details || "NA"}</p>
       <p><b>Class:</b> ${p.class || "NA"}</p>
-      <p><b>Time Created:</b> ${p.Timecreated || "NA"}</p>
+      <p><b>Time Created:</b> ${p.Timecreated ? new Date(p.Timecreated).toLocaleDateString() : "NA"}</p>
       <p><b>Project Displayed:</b> ${p.projectdisplayed || "NA"}</p>
       <p><b>Cost of items:</b> ${p.costitems || "NA"}</p>
     `;
