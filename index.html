@@ -30,6 +30,8 @@ button:hover { background:#0096c7; }
 
 @media (max-width:768px) { h1{font-size:1.8em;} .card{padding:15px;} input,button{flex:1 1 100%; max-width:none;} }
 @media (max-width:480px) { h1{font-size:1.5em;} .card{padding:12px;} .search-container{gap:8px;} }
+
+a { color:white; text-decoration:none; }
 </style>
 </head>
 <body>
@@ -42,8 +44,6 @@ button:hover { background:#0096c7; }
   <input type="text" id="searchBox" placeholder="Search by project or student name...">
   <button onclick="searchProject()">Search</button>
   <div id="result"></div>
-
-
 
   <!-- Add Project Section -->
   <h2>➕ Add New Project</h2>
@@ -59,49 +59,62 @@ button:hover { background:#0096c7; }
     <button type="submit">Add Project</button>
   </form>
 
-    <div>
+  <div>
     <button>
-      <a href="about.html" target="_blank" style="text-decoration:none;">About</a>
+      <a href="about.html" target="_blank">About</a>
     </button>
   </div>
 </div>
 
-<script src="projects.js"></script>
 <script>
-// Search function
-function searchProject() {
-  const query = document.getElementById("searchBox").value.toLowerCase();
+const scriptURL = "https://script.google.com/macros/s/AKfycbzH-T8-dthF-EiTUUw5MFOWT9nfHnHNNvMY7OO5PC2Ny81ju3952Y4gM07DjqJrjzKFpw/exec"; // Replace with your Google Apps Script Web App URL
+
+let allProjects = [];
+
+// Fetch projects from Google Sheet
+function loadProjects() {
+  fetch(scriptURL)
+    .then(res => res.json())
+    .then((projects) => {
+      allProjects = projects;
+      displayProjects(projects);
+    })
+    .catch(err => console.error("Error fetching projects:", err));
+}
+
+// Display projects in result div
+function displayProjects(projects) {
   const resultDiv = document.getElementById("result");
   resultDiv.innerHTML = "";
-
-  if (!window.projects || window.projects.length === 0) {
-    resultDiv.innerHTML = "<p>No projects loaded.</p>";
+  if (projects.length === 0) {
+    resultDiv.innerHTML = "<p>No projects found.</p>";
     return;
   }
+  projects.forEach(p => {
+    const div = document.createElement("div");
+    div.classList.add("card");
+    div.innerHTML = `
+      <h2>${p.projectName}</h2>
+      <p><b>Summary:</b> ${p.summary}</p>
+      <p><b>Created By:</b> ${p.createdBy}</p>
+      <p><b>Details:</b> ${p.details ?? "NA"}</p>
+      <p><b>Class:</b> ${p.class ?? "NA"}</p>
+      <p><b>Time Created:</b> ${p.Timecreated ?? "NA"}</p>
+      <p><b>Project Displayed:</b> ${p.projectdisplayed ?? "NA"}</p>
+      <p><b>Cost of items:</b> ${p.costitems ?? "NA"}</p>
+    `;
+    resultDiv.appendChild(div);
+  });
+}
 
-  const found = window.projects.filter(p =>
+// Search projects
+function searchProject() {
+  const query = document.getElementById("searchBox").value.toLowerCase();
+  const filtered = allProjects.filter(p =>
     p.projectName.toLowerCase().includes(query) ||
     p.createdBy.toLowerCase().includes(query)
   );
-
-  if (found.length === 0) {
-    resultDiv.innerHTML = "<p>No project found.</p>";
-  } else {
-    found.forEach(p => {
-      resultDiv.innerHTML += `
-        <div class="card">
-          <h2>${p.projectName}</h2>
-          <p><b>Summary:</b> ${p.summary}</p>
-          <p><b>Created By:</b> ${p.createdBy}</p>
-          <p><b>Details:</b> ${p.details}</p>
-          <p><b>Class:</b> ${p.class ?? "NA"}</p>
-          <p><b>Time Created:</b> ${p.Timecreated ?? "NA"}</p>
-          <p><b>Project Displayed:</b> ${p.projectdisplayed ?? "NA"}</p>
-          <p><b>Cost of items:</b> ${p.costitems ?? "NA"}</p>
-        </div>
-      `;
-    });
-  }
+  displayProjects(filtered);
 }
 
 // Add new project
@@ -117,9 +130,19 @@ function addProject(e) {
     projectdisplayed: document.getElementById("pdisplayed").value,
     costitems: document.getElementById("pcost").value
   };
-  window.projects.push(newProj);
-  alert("✅ Project added successfully!");
-  document.getElementById("projectForm").reset();
+
+  // Send to Google Sheet
+  fetch(scriptURL, {
+    method: "POST",
+    body: JSON.stringify(newProj)
+  })
+  .then(res => res.text())
+  .then(() => {
+    alert("✅ Project added successfully!");
+    document.getElementById("projectForm").reset();
+    loadProjects(); // refresh projects
+  })
+  .catch(err => alert("Error adding project: " + err));
 }
 
 // Particle background
@@ -132,6 +155,8 @@ class Particle{constructor(){this.x=Math.random()*canvas.width;this.y=Math.rando
 function initParticles(){particles=[];for(let i=0;i<100;i++){particles.push(new Particle());}}
 function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animate);}
 initParticles(); animate();
+
+window.onload = loadProjects;
 </script>
 </body>
 </html>
