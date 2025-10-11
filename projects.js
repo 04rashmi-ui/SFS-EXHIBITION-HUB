@@ -1,8 +1,9 @@
+// ================== CONFIG ==================
 const scriptURL = "https://script.google.com/macros/s/AKfycbzH-T8-dthF-EiTUUw5MFOWT9nfHnHNNvMY7OO5PC2Ny81ju3952Y4gM07DjqJrjzKFpw/exec"; // Google Apps Script Web App URL
 
 let allProjects = [];
 
-// Fetch all projects from Google Sheet
+// ================== FETCH PROJECTS ==================
 function loadProjects() {
   fetch(scriptURL)
     .then(res => res.json())
@@ -16,7 +17,7 @@ function loadProjects() {
     });
 }
 
-// Display projects on page
+// ================== DISPLAY PROJECTS ==================
 function displayProjects(projects) {
   const resultDiv = document.getElementById("result");
   resultDiv.innerHTML = "";
@@ -43,7 +44,7 @@ function displayProjects(projects) {
   });
 }
 
-// Search functionality
+// ================== SEARCH FUNCTION ==================
 function searchProject() {
   const query = document.getElementById("searchBox").value.toLowerCase();
   const filtered = allProjects.filter(p =>
@@ -53,7 +54,7 @@ function searchProject() {
   displayProjects(filtered);
 }
 
-// Add a new project
+// ================== ADD NEW PROJECT ==================
 function addProject(e) {
   e.preventDefault();
 
@@ -76,20 +77,56 @@ function addProject(e) {
   .then(() => {
     alert("✅ Project added successfully!");
     document.getElementById("projectForm").reset();
-    loadProjects(); // reload all projects
+    loadProjects(); // refresh projects
   })
   .catch(err => alert("Error adding project: " + err));
 }
 
-// Initialize particle background (optional)
+// ================== PARTICLE BACKGROUND (OPTIONAL) ==================
 const canvas = document.getElementById("bgCanvas");
 const ctx = canvas.getContext("2d");
 let particles = [];
+
 function resizeCanvas(){ canvas.width=window.innerWidth; canvas.height=window.innerHeight; }
 window.addEventListener("resize", resizeCanvas); resizeCanvas();
-class Particle{constructor(){this.x=Math.random()*canvas.width;this.y=Math.random()*canvas.height;this.size=Math.random()*3+1;this.speedX=(Math.random()-0.5)*1.5;this.speedY=(Math.random()-0.5)*1.5;} update(){this.x+=this.speedX;this.y+=this.speedY;if(this.x<0||this.x>canvas.width)this.speedX*=-1;if(this.y<0||this.y>canvas.height)this.speedY*=-1;} draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fillStyle="rgba(255,255,255,0.7)";ctx.fill();}}
-function initParticles(){particles=[];for(let i=0;i<100;i++){particles.push(new Particle());}}
-function animate(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{p.update();p.draw();});requestAnimationFrame(animate);}
-initParticles(); animate();
 
+class Particle {
+  constructor() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 3 + 1;
+    this.speedX = (Math.random() - 0.5) * 1.5;
+    this.speedY = (Math.random() - 0.5) * 1.5;
+  }
+  update() {
+    this.x += this.speedX;
+    this.y += this.speedY;
+    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+    ctx.fillStyle = "rgba(255,255,255,0.7)";
+    ctx.fill();
+  }
+}
+
+function initParticles() {
+  particles = [];
+  for (let i = 0; i < 100; i++) {
+    particles.push(new Particle());
+  }
+}
+
+function animate() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  requestAnimationFrame(animate);
+}
+
+initParticles();
+animate();
+
+// ================== INITIALIZE PAGE ==================
 window.onload = loadProjects;
